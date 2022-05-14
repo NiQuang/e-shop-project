@@ -1,0 +1,36 @@
+.adm--dashboard{
+    width: 100%;
+
+    &__section{
+        &--title{
+            h3{
+                font-size: 0.85rem;
+                text-transform: capitalize;
+                color: $color-text-gray;
+                font-weight: 400;
+            }
+        }
+
+        &--content{
+            @include flex(flex-start, center);
+            flex-wrap: wrap;
+        }
+    }
+}
+
+.dashboard--widget{
+    width: 30%;
+    padding: 15px 20px;
+    @include flex(space-between, center);
+    background-color: $color-bg-white;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    & ~ & {
+        margin-left: 15px;
+    }
+
+    &__icon{
+        width: 68px;
+        height: 68px;
+        @include flex(center, center);
+    }
+}

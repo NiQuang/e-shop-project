@@ -1,24 +1,28 @@
-import logo from './logo.svg';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import AdminLayout from './components/layout/AdminLayout';
+import WebsiteLayout from './components/layout/WebsiteLayout';
+import AdmCategories from './features/admin/AdmCategories';
+import AdmDashboard from './features/admin/AdmDashboard';
+import AdmProducts from './features/admin/AdmProducts';
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<WebsiteLayout />}>
+
+        </Route>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdmDashboard />}/>
+          <Route path="users" element={<div>Users Manager</div>}/>
+          <Route path="categories" element={<AdmCategories />}/>
+          <Route path="products" element={<AdmProducts />}/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
