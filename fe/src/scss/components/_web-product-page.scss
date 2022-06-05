@@ -1,0 +1,180 @@
+.product {
+    overflow: hidden;
+    background-color: $color-bg-white;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+
+    &__imgs {
+        @include flex(flex-start, flex-start);
+        flex-wrap: wrap;
+
+        &--list {
+            width: 100%;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+            margin-top: 1rem;
+            padding: 10px;
+            @include flex(flex-start, flex-start);
+            flex-direction: row;
+            overflow-x: scroll;
+
+            &__item {
+                width: 120px;
+                min-width: 120px;
+                max-width: 120px;
+                height: 175px;
+                min-height: 175px;
+                max-height: 175px;
+                padding: 5px;
+
+                cursor: pointer;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                    object-position: center;
+                }
+            }
+        }
+
+        &--img {
+            padding: 10px 20px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+            width: 100%;
+            height: 1000px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                object-position: center;
+            }
+        }
+    }
+
+
+    &__info {
+        &--navigate{
+            font-size: 0.75rem;
+            color: $color-text-gray;
+        }
+
+        &--title{
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            h2{
+                font-size: 1.75rem;
+                text-transform: uppercase;
+                // color: $color-second;
+            }
+        }
+
+        &--price{
+            font-size: 1.5rem;
+        }
+
+        &--rate{
+            ul{
+                li{
+                    font-size: 0.85rem;
+                }
+            }
+        }
+
+        &--reviews{
+            cursor: pointer;
+            margin-bottom: 5px;
+            text-decoration: underline;
+            color: $color-text-gray;
+        }
+
+        &--sizes{
+            @include flex(flex-start, center);
+            margin: 1rem 0;
+
+
+            &__title{
+                font-size: 1.25rem;
+                margin-right: 1.5rem;
+            }
+
+            &__option{
+                flex-grow: 1;
+                @include flex(flex-start, center);
+
+                &--item{
+                    width: 30px;
+                    height: 30px;
+                    @include flex(center, center);
+                    transition: 0,4s ease-in;
+                    cursor: pointer;
+                    border: 2px solid transparent;
+                    &~&{
+                        margin-left: 10px;
+                    }
+
+                    &:hover, &.choosed{
+                        border-color: $color-second;
+                    }
+                }
+            }
+        }
+
+        &--quantity{
+            @include flex(flex-start, center);
+            margin: 1rem 0;
+
+            &__title{
+                font-size: 1.25rem;
+                margin-right: 1.5rem;
+            }
+
+            &__detail{
+                @include flex(flex-start, center);
+                height: 30px;
+                border: 2px solid $color-text-gray;
+
+                &--minus, &--plus{
+                    width: 30px;
+                    @include flex(center, center);
+                    cursor: pointer;
+
+                    &:hover{
+                        color: $color-primary;
+                    }
+                }
+
+                &--info{
+                    width: 40px;
+                    @include flex(center, center);
+                }
+
+
+            }
+        }
+    }
+
+
+    &__preview {
+        margin-top: 2rem;
+        position: relative;
+        &--content {
+            padding: 1rem 2rem;
+            text-align: justify;
+            height: 120px;
+            overflow: hidden;
+
+            &.expand {
+                height: max-content;
+            }
+        }
+
+        &--toggle{
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+}

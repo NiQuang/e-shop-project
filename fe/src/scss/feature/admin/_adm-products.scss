@@ -15,6 +15,24 @@
                     width: 100%;
                 }
             }
+
+            &__expand{
+                @include flex(flex-start, flex-start);
+                flex-direction: column;
+
+                &--img{
+                    @include flex(flex-start, center);
+
+                    &__item{
+                        width: 120px;
+                        padding: 10px;
+                    }
+                }
+
+                &--upload{
+                    width: 100%;
+                }
+            }
         }
     }
 }

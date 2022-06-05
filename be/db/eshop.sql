@@ -1,3 +1,5 @@
+drop database eShop
+
 create database eShop
 use eShop
 go
@@ -21,20 +23,31 @@ create table Products
 (
 	Id int identity(1,1) not null,
 	Title nvarchar(100) not null,
-	Preview nvarchar(500) null,
-	Images nvarchar(200) null,
+	Preview nvarchar(4000) null,
+	Price float default 0 not null,
 	CreateDate date default getdate() not null,
 	CategoryId int not null
-
 	Constraint PK_Products PRIMARY KEY (Id),
 	Constraint FK_Products_Categories FOREIGN KEY (CategoryId) REFERENCES Categories ON UPDATE CASCADE ON DELETE NO ACTION
 )
 
-
-if OBJECT_ID('Customers') is not null
- drop table Customers
+if object_ID('ProductMedia') is not null
+	drop table ProductMedia
 go
-create table Customers
+create table ProductMedia
+(
+	id bigint identity(1,1) not null,
+	productId int not null,
+	mediaLink nvarchar(100) not null,
+	constraint PK_ProductMedia PRIMARY KEY (id),
+	constraint FK_ProductMedia_Products FOREIGN KEY(productId) REFERENCES Products ON UPDATE CASCADE ON DELETE CASCADE
+)
+
+
+if OBJECT_ID('Users') is not null
+ drop table Users
+go
+create table Users
 (
 	username nvarchar(50) not null,
 	password nvarchar(100) not null,
@@ -42,9 +55,31 @@ create table Customers
 	email nvarchar(200) not null,
 	photo nvarchar(500) null,
 	activated bit default 0 not null,
-	admin bit default 0 not null,
+	constraint PK_Users PRIMARY KEY (username) 
+)
 
-	constraint PK_Customers PRIMARY KEY (username) 
+if OBJECT_ID('Roles') is not null
+	drop table Roles
+go
+create table Roles
+(
+	id int identity(1,1) not null,
+	name nvarchar(250) not null
+	constraint PK_Roles PRIMARY KEY (id)
+)
+
+if OBJECT_ID('Permission') is not null
+	drop table Permission
+go
+create table Permission
+(
+	id int identity(1,1) not null,
+	username nvarchar(50) not null,
+	roleid int not null,
+
+	constraint PK_Permission PRIMARY KEY(id),
+	constraint FK_Permission_Users FOREIGN KEY (username) REFERENCES Users ON UPDATE CASCADE ON DELETE CASCADE,
+	constraint FK_Permission_Roles FOREIGN KEY (roleid) REFERENCES Roles ON UPDATE CASCADE ON DELETE CASCADE
 )
 
 if OBJECT_ID('Orders') is not null
@@ -59,7 +94,7 @@ create table Orders
 	username nvarchar(50) not null,
 
 	constraint PK_Orders PRIMARY KEY (id),
-	constraint FK_Orders_Customers FOREIGN KEY (username) REFERENCES Customers ON UPDATE CASCADE ON DELETE NO ACTION
+	constraint FK_Orders_Users FOREIGN KEY (username) REFERENCES Users ON UPDATE CASCADE ON DELETE NO ACTION
 )
 
 
@@ -77,7 +112,5 @@ create table OrderDetail
 	constraint PK_OrderDetail PRIMARY KEY (id),
 	constraint FK_OrderDetail_Products FOREIGN KEY (productId) REFERENCES Products ON UPDATE CASCADE ON DELETE NO ACTION,
 	constraint FK_OrderDetail_Orders FOREIGN KEY (orderId) REFERENCES Orders ON UPDATE CASCADE ON DELETE CASCADE
-
 )
 
-select * from Orders

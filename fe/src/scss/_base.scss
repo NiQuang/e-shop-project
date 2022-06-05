@@ -2,6 +2,8 @@
 
 
 $adm-sidebar-width: 300px;
+$header-height: 80px;
+
 
 $color-bg-white: #fff;
 $color-bg-light: #ededef;
@@ -11,7 +13,7 @@ $color-primary: #93B3B5;
 $color-second: #9dd5d8;
 
 $color-text-gray: #999;
-
+$color-text-price : rgb(86, 26, 252);
 
 *{
     margin: 0;
@@ -43,6 +45,10 @@ a:hover{
     color: $color-primary;
 }
 
+img{
+    max-width: 100%;
+}
+
 
 .my-btn{
     width: max-content;
@@ -59,6 +65,11 @@ a:hover{
     background-color: $color-primary;
     color : #fff;
     font-size: 1rem;
+}
+
+.my-btn.my-btn--social{
+    border-radius: 10px;
+    min-width: 300px;
 }
 
 .my-btn.my-btn--danger{
@@ -80,6 +91,20 @@ a:hover{
     background-color: $color-second !important;
 }
 
+.ant-input-number{
+    width: 100%;
+}
+
+
+.ant-list-split .ant-list-item {
+    border-bottom: 1px solid #999 !important;
+}
+
+.ant-card-head{
+    background-color: $color-second;
+    text-transform: capitalize;
+    font-size: 1.25rem;
+}
 
 
 @mixin flex($justify-content, $align-items) {

@@ -1,0 +1,134 @@
+.footer {
+    overflow: hidden;
+    padding: 20px 60px;
+
+
+    &__inner {
+
+        &--contact {
+
+            &__logo {
+                padding: 0 30px;
+            }
+
+            &__item {
+                @include flex(flex-start, center);
+
+                &~& {
+                    margin-top: 10px;
+                }
+
+                &--icon {
+                    font-size: 1.25rem;
+                    margin-right: 15px;
+                }
+
+                &--content {
+                    flex-grow: 1;
+                    height: max-content;
+                    text-transform: uppercase;
+                    font-size: 1rem;
+                    color: $color-text-gray;
+                }
+            }
+        }
+
+
+        &--location {
+            @include flex(flex-start, flex-start);
+            flex-direction: column;
+
+            &__title {
+
+                h3 {
+                    font-size: 1.25rem;
+                    text-transform: uppercase;
+                    color: $color-primary;
+                }
+            }
+
+            &__item {
+                flex-grow: 1;
+                @include flex(flex-start, center);
+
+                &~& {
+                    margin-top: 10px;
+                }
+
+                &--icon {
+                    font-size: 1.25rem;
+                    margin-right: 15px;
+                }
+
+                &--content {
+                    flex-grow: 1;
+                    height: max-content;
+                    text-transform: uppercase;
+                    font-size: 1rem;
+                    color: $color-text-gray;
+                }
+            }
+        }
+
+        &--policy {
+            @include flex(flex-start, flex-start);
+
+            flex-direction: column;
+
+            &__item {
+                font-size: 1.25rem;
+                color: $color-text-gray;
+                cursor: pointer;
+                transition: 0.4s ease;
+                text-transform: uppercase;
+
+                &~& {
+                    margin-top: 10px;
+                }
+
+                &:hover {
+                    color: $color-primary;
+                }
+            }
+        }
+
+        &--register {
+            &__title {
+                h3 {
+                    font-size: 1.25rem;
+                    text-transform: uppercase;
+                    color: $color-primary;
+                }
+            }
+
+            &__detail{
+                text-transform: capitalize;
+                color: $color-text-gray;
+            }
+
+
+            &__button{
+                margin-top: 5px;
+                width: 100%;
+                button{
+                    width: 100%;
+                    text-transform: uppercase;
+                    color: #fff;
+                    background-color: $color-primary;
+                    transition: 0.4s ease;
+                }
+
+                &:hover button{
+                    background-color: transparent;
+                    color: $color-primary;
+                }
+            }
+
+            &__payment{
+                @include flex(space-between, center);
+                margin-top: 20px;
+                flex-wrap: wrap;
+            }
+        }
+    }
+}

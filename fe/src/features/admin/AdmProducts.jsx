@@ -1,4 +1,18 @@
-import { Table, Button, Modal, Drawer, Space, Form, Input, Select, message } from 'antd'
+import {
+    Table,
+    Button,
+    Modal,
+    Drawer,
+    Space,
+    Form,
+    Input,
+    Select,
+    message,
+    InputNumber,
+    Upload,
+    Popconfirm
+}
+    from 'antd'
 import React, { useEffect, useState } from 'react'
 import productAPI from '../../api/productsAPI'
 import Helmet from '../../components/helmet/Helmet'
@@ -9,6 +23,88 @@ import {
 } from '@ant-design/icons';
 import { useForm } from 'antd/lib/form/Form';
 import categoriesAPI from '../../api/categoriesAPI';
+import fileAPI from '../../api/fileAPI';
+import productMediasAPI from '../../api/productMediasAPI';
+
+
+const ExpandRow = ({ record, onReload }) => {
+
+    const [uploadList, setUploadList] = useState([])
+
+    const handleUploadImage = async (id) => {
+        const formData = new FormData();
+        uploadList.forEach(item => {
+            formData.append('file', item)
+        })
+
+        const res = await fileAPI.upload('images', formData)
+        if (res) {
+            const mediaLinks = res
+            for (const link of mediaLinks) {
+                const res2 = await productMediasAPI.createMedia({
+                    mediaLink: link,
+                    product: { id: id }
+                })
+                console.log(res2)
+            }
+            setUploadList([])
+        }
+
+    }
+
+    const handleDeleteIamge = async (item) => {
+        const res = productMediasAPI.deleteMedia(item.id)
+        onReload()
+    }
+
+    return (
+        <div className='adm--products__table--row__expand'>
+            <div className="adm--products__table--row__expand--img">
+                {
+                    record.productMedias.length > 0 && record.productMedias.map((item, index) => (
+                        <div className="adm--products__table--row__expand--img__item" key={item.id}>
+                            <Popconfirm
+                                title={"Are you sure to delete this image ?"}
+                                onConfirm={() => handleDeleteIamge(item)}
+                                okText="Yes"
+                                cancelText="No"
+                            >
+                                <img src={`http://localhost:8080/api/file/images/${item.mediaLink}`} />
+                            </Popconfirm>
+                        </div>
+                    ))
+                }
+            </div>
+            <div className="adm--products__table--row__expand--upload">
+                <Upload.Dragger
+                    action={"http://localhost:3000/api/file/images"}
+                    multiple
+                    listType='picture'
+                    showUploadList={{ showRemoveIcon: true }}
+                    accept='.png,.jpg,.jpeg'
+                    fileList={uploadList}
+                    beforeUpload={(file, fileList) => {
+                        setUploadList(prev => [...prev, file])
+                        return false
+                    }}
+                    onRemove={(file) => {
+                        setUploadList(uploadList.filter((item) => file.uid !== item.uid))
+                    }}
+                >
+                    <p>Drag files here OR</p>
+                    <br />
+                    <Button>Choose file</Button>
+                </Upload.Dragger>
+                <Button
+                    className='my-btn my-btn--primary'
+                    onClick={() => { handleUploadImage(record.id) }}
+                >
+                    Up load
+                </Button>
+            </div>
+        </div>
+    )
+}
 
 const AdmProducts = () => {
 
@@ -24,6 +120,9 @@ const AdmProducts = () => {
     const [form] = useForm()
 
 
+    const [isModalUpload, setIsModalUpload] = useState(false)
+    const [modalUploadLoading, setModalUploadLoading] = useState(false)
+    const [modalUploadText, setModalUploadText] = useState('')
 
 
     const reloadFetchData = () => {
@@ -59,6 +158,7 @@ const AdmProducts = () => {
 
     }
 
+
     const onOpenForm = (id) => {
         setIdEditting(id)
         setIsForm(true)
@@ -75,6 +175,7 @@ const AdmProducts = () => {
             title: values.title,
             preview: values.preview,
             images: values.images,
+            price: values.price,
             category: {
                 id: values.category
             }
@@ -85,7 +186,7 @@ const AdmProducts = () => {
                 id: idEditting
             })
 
-            if (res.status === 200) {
+            if (res) {
                 reloadFetchData()
                 message.success("Update successfully")
             } else {
@@ -94,7 +195,7 @@ const AdmProducts = () => {
         } else {
             const res = await productAPI.createProduct(newProduct)
 
-            if (res.status === 200) {
+            if (res) {
                 form.resetFields()
                 reloadFetchData()
                 message.success("Create successfully")
@@ -108,7 +209,8 @@ const AdmProducts = () => {
 
     useEffect(() => {
         productAPI.getAll().then((response) => {
-            setTableData(response.data.map((item, index) => (
+            console.log(response)
+            setTableData(response.map((item, index) => (
                 {
                     ...item,
                     index: index + 1,
@@ -121,7 +223,7 @@ const AdmProducts = () => {
             })
 
         categoriesAPI.getAll().then((response) => {
-            setCategories(response.data)
+            setCategories(response)
         })
             .catch((error) => {
                 console.log(error)
@@ -132,10 +234,11 @@ const AdmProducts = () => {
         if (idEditting) {
             productAPI.getProduct(idEditting).then((response) => {
                 form.setFieldsValue({
-                    title: response.data.title,
-                    preview: response.data.preview,
-                    images: response.data.images,
-                    category: response.data.category.id
+                    title: response.title,
+                    preview: response.preview,
+                    images: response.images,
+                    category: response.category.id,
+                    price: response.price
                 })
             })
                 .catch(error => console.log(error))
@@ -143,6 +246,7 @@ const AdmProducts = () => {
             form.resetFields()
         }
     }, [idEditting])
+
 
     return (
         <Helmet title={"Admin - Products"}>
@@ -167,15 +271,15 @@ const AdmProducts = () => {
                                 dataSource={tableData}
                                 size='small'
                                 bordered
+                                expandable={{
+                                    expandedRowRender: record => (
+                                        <ExpandRow record={record} onReload={() => {setReload(!reload)}}/>
+                                    )
+                                }}
                             >
                                 <Table.Column className="adm--products__table--column__index" title="STT" dataIndex="index" key="index" />
                                 <Table.Column className="adm--products__table--column__title" title="Name" dataIndex="title" key="title" />
                                 <Table.Column className="adm--products__table--column__preview" title="Preview" dataIndex="preview" key="preview" />
-                                <Table.Column className="adm--products__table--column__image" title="Image" render={(record) => (
-                                    <div className="adm--products__table--row__image">
-                                        <img src={record.images} alt={record.title} />
-                                    </div>
-                                )} />
                                 <Table.Column title="Category" render={(record) => (
                                     <>
                                         {record.category.title}
@@ -213,6 +317,15 @@ const AdmProducts = () => {
                 onOk={handleDeleteProduct}
             >
                 {modalText}
+            </Modal>
+            <Modal
+                visible={isModalUpload}
+                title={modalUploadText}
+                onCancel={() => { setIsModalUpload(false) }}
+                confirmLoading={modalUploadLoading}
+                onOk={() => { setIsModalUpload(false) }}
+            >
+                {modalUploadText}
             </Modal>
             {contextHolder}
             <Drawer
@@ -261,6 +374,27 @@ const AdmProducts = () => {
                             <Input />
                         </Form.Item>
                         <Form.Item
+                            label="Price"
+                            name="price"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng không để trống !'
+                                },
+                                ({ getFieldsValue }) => ({
+                                    validator(_, value) {
+                                        if (Number(value) > 0) {
+                                            return Promise.resolve()
+                                        }
+                                        return Promise.reject('Giá phải lơn 0 !')
+                                    }
+                                })
+                            ]}
+                            hasFeedback
+                        >
+                            <InputNumber style={{ width: '100%' }} />
+                        </Form.Item>
+                        <Form.Item
                             label="Image"
                             name="images"
                         >
@@ -288,6 +422,23 @@ const AdmProducts = () => {
                                 }
 
                             </Select>
+                        </Form.Item>
+                        <Form.Item label="Upload Image">
+                            {/* <Upload.Dragger
+                                action={"http://localhost:3000/api/file/images"}
+                                multiple
+                                listType='picture'
+                                showUploadList={{ showRemoveIcon: true }}
+                                accept='.png,.jpg,.jpeg'
+                                beforeUpload={(file) => {
+                                    console.log(file)
+                                    return false
+                                }}
+                            >
+                                <p>Drag files here OR</p>
+                                <br />
+                                <Button>Upload</Button>
+                            </Upload.Dragger> */}
                         </Form.Item>
                         <Form.Item>
                             <Button

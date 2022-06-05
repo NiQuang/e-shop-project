@@ -1,0 +1,8 @@
+.web{
+
+    &--content{
+        margin-top: $header-height;
+        min-height: 100vh;
+        background-color: $color-bg-light;
+    }
+}

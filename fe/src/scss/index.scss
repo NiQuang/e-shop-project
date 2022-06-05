@@ -1,6 +1,21 @@
 @import './base';
 
 @import './components/layout/admin-layout';
+@import './components/layout/web-layout';
+@import './components/header';
+@import './components/footer';
+@import './components/web-section';
+@import './components/web-product-page';
+
+
 @import './feature/admin/adm-dashboard';
 @import './feature/admin/adm-categories';
 @import './feature/admin/adm-products';
+
+
+@import './feature/website/web-home';
+@import './feature/website/web-products';
+@import './feature/website/web-product-detail';
+@import './feature/website/web-login';
+@import './feature/website/web-cart';
+

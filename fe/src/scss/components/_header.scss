@@ -1,0 +1,104 @@
+.header {
+    height: $header-height;
+    width: 100%;
+    overflow: hidden;
+    @include flex(flex-start, center);
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 0px 30px;
+    z-index: 10;
+    background-color: $color-bg-white;
+
+    &__nav {
+        @include flex(center, center);
+
+        &--item {
+            font-size: 1.25rem;
+            font-weight: 400;
+            transition: 0.4s ease;
+            border-radius: 10px;
+            padding: 5px 10px;
+
+            &:hover,
+            &.active {
+                color: #fff;
+                background-color: $color-primary ;
+            }
+
+            &~& {
+                margin-left: 20px;
+            }
+        }
+    }
+
+    &__logo {
+        width: 300px;
+        height: 100%;
+
+        &--inner {
+            @include flex(center, center);
+
+            &__img {
+                width: $header-height;
+                height: $header-height;
+            }
+        }
+
+    }
+
+    &__customer {
+        @include flex(flex-end, center);
+        flex-grow: 1;
+
+        &--cart {
+            margin-right: 20px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: 0.4s ease;
+            position: relative;
+
+            &:hover &__icon {
+                color: $color-primary;
+            }
+
+            &__info {
+                @include flex(center, center);
+                position: absolute;
+                top: -10%;
+                right: -10px;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background-color: red;
+                color: #fff;
+                font-weight: 500;
+                font-size: 0.75rem;
+            }
+        }
+
+        &--user {
+            width: $header-height;
+            height: 100%;
+            padding: 20px;
+            margin-right: 20px;
+            cursor: pointer;
+
+            &__inner {
+                width: 100%;
+                height: 100%;
+                padding: 5px;
+                border-radius: 50%;
+                // border: 2px solid $color-second;
+
+                &--avatar {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 50%;
+                }
+            }
+
+        }
+    }
+}

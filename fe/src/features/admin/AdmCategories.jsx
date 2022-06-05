@@ -39,7 +39,8 @@ const AdmCategories = () => {
     const handleCreateCategory = async (payload) => {
         setIsCreating(true)
         const res = await categoriesAPI.createCategory(payload)
-        if (res.status === 200) {
+        if (res) {
+            console.log(res)
             setReload(!reload)
             setIsCreating(false)
             modal.success({
@@ -55,7 +56,8 @@ const AdmCategories = () => {
 
     const handleUpdateCategory = async (payload) => {
         const res = await categoriesAPI.updateCategory(payload)
-        if (res.status === 200) {
+        if (res) {
+            console.log(res)
             setReload(!reload)
             modal.success({
                 title: "Update successfully !",
@@ -73,6 +75,7 @@ const AdmCategories = () => {
         setModalLoading(true)
         const res = await categoriesAPI.deleteCategory(idEditting)
         if (res.status === 200) {
+            console.log(res)
             setModalText('')
             setModalLoading(false)
             setIsModal(false)
@@ -91,7 +94,7 @@ const AdmCategories = () => {
 
     useEffect(() => {
         categoriesAPI.getAll().then((response) => {
-            setTableData(response.data.map((item, index) => (
+            setTableData(response.map((item, index) => (
                 {
                     ...item,
                     index: index +1,
