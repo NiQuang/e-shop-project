@@ -16,7 +16,8 @@ import { signin } from '../../redux/features/authSlice'
 const WebLogin = () => {
 
     const [isLoginFail, setIsLoginFail] = useState(false)
-    const [loginFailText, setLoginFailText] = useState('')
+    const [isLoginSuccess, setIsLoginSuccess] = useState(false)
+    const [loginText, setLoginText] = useState('')
     const [checkingAuth, setCheckingAuth] = useState(true)
 
     const isAuth = useSelector((state) => state.auth.isAuth)
@@ -36,17 +37,24 @@ const WebLogin = () => {
         if (!res.status) {
             console.log(res)
             dispath(signin(res))
+            setIsLoginSuccess(true)
+            setLoginText('Đăng nhập thành công')
         } else {
             console.log(res)
             setIsLoginFail(true)
-            setLoginFailText('Tên đăng nhập hoặc mật khẩu không chính xác!')
+            setLoginText('Tên đăng nhập hoặc mật khẩu không chính xác!')
         }
     }
 
     const loginFailCancel = () => {
         setIsLoginFail(false)
-        setLoginFailText('')
-
+        setLoginText('')
+    }
+    
+    const loginSuccess = () => {
+        setIsLoginSuccess(false)
+        setLoginText('')
+        navigate('/')
     }
 
     useState(()=> {
@@ -55,7 +63,7 @@ const WebLogin = () => {
         }else{
             setCheckingAuth(false)
         }
-    },[])
+    },[isAuth])
 
     useEffect(()=> {
         if(checkingAuth){
@@ -180,10 +188,20 @@ const WebLogin = () => {
                                 title="Đăng nhập thất bại"
                                 visible={isLoginFail}
                                 onCancel={loginFailCancel}
-                                okText={loginFailCancel}
+                                onOk={loginFailCancel}
                             >
                                 {
-                                    loginFailText
+                                    loginText
+                                }
+                            </Modal>
+                            <Modal
+                                title="Đăng nhập thành công"
+                                visible={isLoginSuccess}
+                                onCancel={loginSuccess}
+                                onOk={loginSuccess}
+                            >
+                                {
+                                    loginText
                                 }
                             </Modal>
                         </WebSection >

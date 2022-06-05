@@ -26,8 +26,8 @@ export const authSlice = createSlice({
             state.isAuth = false
             state.user = null
             state.token = null
-            localStorage.clear("USER")
-            localStorage.clear("TOKEN")
+            localStorage.removeItem("USER")
+            localStorage.removeItem("TOKEN")
 
         }
     }

@@ -26,19 +26,30 @@ const Header = () => {
         dispath(signout())
     }
 
+    const check = isAuth && user?.roles?.length > 0 && (user?.roles?.includes("ROLE_ADMIN") || user?.roles?.includes("ROLE_EMPLOYEE"))
+
+
     const [menu, setMenu] = useState((
         <Menu
             items={isAuth ?
-                [
-                    {
-                        label: <Link to="/my-account">Cài đặt</Link>,
-                        key: '0'
-                    },
-                    {
-                        label: <Button onClick={() => { handleSignout() }}>Đăng xuất</Button>,
-                        key: '1'
-                    }
-                ]
+                (
+                    [
+                        {
+                            label: <Link to="/my-account">Cài đặt</Link>,
+                            key: '0'
+                        },
+                        check ?
+                            {
+                                label: <Link to="/admin">Trang quản trị</Link>,
+                                key: '00'
+                            } : null
+                        ,
+                        {
+                            label: <Button onClick={() => { handleSignout() }}>Đăng xuất</Button>,
+                            key: '1'
+                        }
+                    ]
+                )
                 :
                 [
                     {
@@ -57,6 +68,8 @@ const Header = () => {
 
     useEffect(() => {
         console.log(isAuth)
+        const check = isAuth && user?.roles?.length > 0 && (user?.roles?.includes("ROLE_ADMIN") || user?.roles?.includes("ROLE_EMPLOYEE"))
+
         setMenu(
             (
                 <Menu
@@ -66,6 +79,11 @@ const Header = () => {
                                 label: <Link to="/my-account">Cài đặt</Link>,
                                 key: '0'
                             },
+                            check ?
+                                {
+                                    label: <Link to="/admin">Trang quản trị</Link>,
+                                    key: '00'
+                                } : null,
                             {
                                 label: <Button onClick={() => { handleSignout() }}>Đăng xuất</Button>,
                                 key: '1'

@@ -16,8 +16,8 @@ const WebProductDetail = ({ }) => {
 
     useEffect(() => {
         productsAPI.getProduct(id).then((response) => {
-            if(response.status === 200) {
-                setProduct(response.data)
+            if(!response.status) {
+                setProduct(response)
                 setLoading(false)
             }else{
                 setProduct(null)

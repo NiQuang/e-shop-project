@@ -17,6 +17,7 @@ public class User {
 
     @Id
     private String username;
+    @JsonIgnore
     private String password;
     private String fullname;
     private String email;
@@ -28,7 +29,7 @@ public class User {
     private List<Order> orders;
 
     @OneToMany(mappedBy = "user")
-//    @JsonIgnore
+    @JsonIgnore
     private List<Permission> permissions;
 
 

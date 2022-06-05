@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import AdminLayout from './components/layout/AdminLayout';
 import WebsiteLayout from './components/layout/WebsiteLayout';
+import ProtectAdmin from './components/protect-admin/ProtectAdmin';
 import AdmCategories from './features/admin/AdmCategories';
 import AdmDashboard from './features/admin/AdmDashboard';
 import AdmProducts from './features/admin/AdmProducts';
@@ -27,7 +28,9 @@ function App() {
           <Route path="login" element={<WebLogin />} />
           <Route path="*" element={<div>Page not found</div>} />
         </Route>
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={<ProtectAdmin>
+          <AdminLayout />
+        </ProtectAdmin>}>
           <Route index element={<AdmDashboard />} />
           <Route path="users" element={<div>Users Manager</div>} />
           <Route path="categories" element={<AdmCategories />} />

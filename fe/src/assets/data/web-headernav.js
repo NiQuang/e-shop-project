@@ -15,10 +15,6 @@ const headerNavData = [
     {
         view: 'Liên hệ',
         router: '/contact'
-    },
-    {
-        view:'Admin',
-        router: '/admin'
     }
 ]
 

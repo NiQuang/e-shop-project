@@ -13,6 +13,7 @@ import com.eshop.security.RoleEnum;
 import com.eshop.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -125,4 +126,15 @@ public class AuthRestController {
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
+
+    @GetMapping("/my-user/{username}")
+    public ResponseEntity<User> getOne(@PathVariable("username") String username){
+        if(!userRepository.existsById(username)){
+            return ResponseEntity.notFound().build();
+        }
+        return  ResponseEntity.ok(userRepository.findById(username).get());
+
+    }
+
 }

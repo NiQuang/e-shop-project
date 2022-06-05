@@ -1,6 +1,7 @@
 package com.eshop.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class Permission {
 
     @ManyToOne
     @JoinColumn(name = "username")
+    @JsonIgnore
     private User user;
 
 
