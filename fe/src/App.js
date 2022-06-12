@@ -12,6 +12,7 @@ import WebHomePage from './features/website/WebHomePage';
 import WebLogin from './features/website/WebLogin';
 import WebProduct from './features/website/WebProduct';
 import WebProductDetail from './features/website/WebProductDetail';
+import WebSignUp from './features/website/WebSingUp';
 
 
 
@@ -26,6 +27,7 @@ function App() {
           <Route path="about-us" element={<WebAboutUs />} />
           <Route path="cart" element={<WebCart />} />
           <Route path="login" element={<WebLogin />} />
+          <Route path="signup" element={<WebSignUp />} />
           <Route path="*" element={<div>Page not found</div>} />
         </Route>
         <Route path="/admin" element={<ProtectAdmin>

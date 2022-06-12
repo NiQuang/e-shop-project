@@ -8,6 +8,8 @@ public class SignupRequest {
     private String password;
     private Set<String> role;
 
+    private String fullname;
+
     public String getUsername() {
         return username;
     }
@@ -38,5 +40,13 @@ public class SignupRequest {
 
     public void setRole(Set<String> role) {
         this.role = role;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 }

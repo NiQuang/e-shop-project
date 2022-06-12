@@ -57,7 +57,7 @@ const Header = () => {
                         key: '0'
                     },
                     {
-                        label: <Link to="/register">Đăng ký</Link>,
+                        label: <Link to="/signup">Đăng ký</Link>,
                         key: '1'
                     }
                 ]
@@ -96,7 +96,7 @@ const Header = () => {
                                 key: '0'
                             },
                             {
-                                label: <Link to="/register">Đăng ký</Link>,
+                                label: <Link to="/signup">Đăng ký</Link>,
                                 key: '1'
                             }
                         ]

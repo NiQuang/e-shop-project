@@ -86,7 +86,7 @@ public class AuthRestController {
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(encoder.encode(signUpRequest.getPassword()));
         user.setActivated(false);
-        user.setFullname(signUpRequest.getUsername());
+        user.setFullname(signUpRequest.getFullname());
 
 
 

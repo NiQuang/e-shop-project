@@ -201,6 +201,8 @@ insert ProductMedia(productId, mediaLink) values(69,N'out-wear-11-1.jpg')
 
 
 select * from Users
+select * from USers where username = 'testfw1'
+
 update users set password = N'$2a$10$0lW.y4kHdqB8nbupMo4.VucfAbi7D4VlyS86I7IS3M7fRgKG150Se'
 INSERT Users ([Username], [Password], [Fullname], [Email], [Photo]) VALUES (N'qadmin', N'qadmin', N'Q Admin', N'qadmin@gmail.com', N'user.png')
 INSERT Users ([Username], [Password], [Fullname], [Email], [Photo]) VALUES (N'ALFKI', N'alfki', N'Maria Anders', N'alfki@gmail.com', N'user.png')
