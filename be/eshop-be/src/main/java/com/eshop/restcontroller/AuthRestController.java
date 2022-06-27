@@ -61,7 +61,8 @@ public class AuthRestController {
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 userDetails.getFullname(),
-                roles));
+                roles, userDetails.getAdress(),
+                userDetails.getCartItems()));
     }
 
     @PostMapping("/signup")

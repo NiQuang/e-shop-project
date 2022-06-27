@@ -7,20 +7,22 @@ import {
     UserOutlined
 } from '@ant-design/icons';
 import { Avatar, Button, Dropdown, Menu } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { signout } from '../../redux/features/authSlice';
 
 const Header = () => {
     const location = useLocation()
 
 
-    const cart = useSelector(state => state.cart)
+    const cart = useSelector(state => state.cart, shallowEqual)
 
     const isAuth = useSelector(state => state.auth.isAuth)
 
     const user = useSelector(state => state.auth.user)
 
     const dispath = useDispatch()
+
+    const [length, setLength] = useState(undefined)
 
     const handleSignout = () => {
         dispath(signout())
@@ -67,7 +69,6 @@ const Header = () => {
     ))
 
     useEffect(() => {
-        console.log(isAuth)
         const check = isAuth && user?.roles?.length > 0 && (user?.roles?.includes("ROLE_ADMIN") || user?.roles?.includes("ROLE_EMPLOYEE"))
 
         setMenu(

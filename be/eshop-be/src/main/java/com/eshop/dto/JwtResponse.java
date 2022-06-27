@@ -1,5 +1,8 @@
 package com.eshop.dto;
 
+import com.eshop.entity.Adress;
+import com.eshop.entity.CartItem;
+
 import java.util.List;
 
 public class JwtResponse {
@@ -11,13 +14,19 @@ public class JwtResponse {
     private String fullname;
     private List<String> roles;
 
-    public JwtResponse(String accessToken, String username, String email, String fullname, List<String> roles) {
+    private List<Adress> adress;
+
+    private List<CartItem> cartItems;
+
+    public JwtResponse(String accessToken, String username, String email, String fullname, List<String> roles, List<Adress> adress,List<CartItem> cartItems) {
         this.token = accessToken;
         this.id = id;
         this.username = username;
         this.email = email;
         this.roles = roles;
         this.fullname = fullname;
+        this.adress = adress;
+        this.cartItems = cartItems;
     }
 
     public String getAccessToken() {
@@ -70,5 +79,22 @@ public class JwtResponse {
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
+    }
+
+
+    public List<Adress> getAdress() {
+        return adress;
+    }
+
+    public void setAdress(List<Adress> adress) {
+        this.adress = adress;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 }

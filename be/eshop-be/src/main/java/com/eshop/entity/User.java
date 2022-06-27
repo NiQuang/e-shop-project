@@ -28,6 +28,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "username")
+//    private Cart carts;
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Permission> permissions;
@@ -37,4 +41,10 @@ public class User {
     @JoinTable(name="permission", joinColumns = @JoinColumn(name="username")
             ,inverseJoinColumns = @JoinColumn(name = "roleid"))
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Adress> adress;
+
+    @OneToMany(mappedBy = "user")
+    private List<CartItem> cartItems;
 }

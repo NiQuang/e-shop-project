@@ -1,5 +1,5 @@
-import { Button, Col, Row, Card, Tag, List, Select, Empty, Popconfirm } from 'antd'
-import React, { useState } from 'react'
+import { Button, Col, Row, Card, Tag, List, Select, Empty, Popconfirm, Modal } from 'antd'
+import React, { useEffect, useState } from 'react'
 import Helmet from '../../components/helmet/Helmet'
 import WebSection from '../../components/web-section/WebSection'
 import {
@@ -12,10 +12,21 @@ import { product } from '../../assets/data/productsData'
 import numberWithCommas from '../../utils/numberComas'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateCartItemQuantity, removeCartItem } from '../../redux/features/cartSlice'
+import { useNavigate } from 'react-router-dom'
+import cartAPI from '../../api/cartAPI'
 
 const WebCart = () => {
     const cart = useSelector((state) => state.cart)
+
+    
+    const user = useSelector((state) => state.auth.user)
     const dispatch = useDispatch()
+
+    const [isEmptyModal, setIsEmptyModal] = useState(false)
+    const [isEmpty, setIsEmpty] = useState(cart.length === 0)
+    const [cartData, setCartData] = useState(cart)
+
+    const navigate = useNavigate()  
 
     const handleChangeItemQuantity = (id, quantity) => {
         console.log(id, quantity)
@@ -25,6 +36,37 @@ const WebCart = () => {
     const handleRemoveCartItem = (id) => {
         dispatch(removeCartItem({ id: id }))
     }
+
+    const handleCheckOut = async () => {
+        if (cart.length > 0) {
+            const checkout = {
+                adress: "testfw",
+                phonenumber: "testfw0123",
+                username: user?.username,
+                orderDetails: cart.map((item, index) => {
+                    return {
+                        price: item.item.price,
+                        quantity: item.quantity,
+                        product: {
+                            id: item.item.id
+                        }
+                    }
+                }),
+                status: 0
+            }
+
+            const res = await cartAPI.checkout(checkout)
+
+            if (!res.status) {
+                console.log(res)
+            } else {
+                console.log(res)
+            }
+        } else {
+            setIsEmptyModal(true)
+        }
+    }
+
 
     return (
         <Helmet
@@ -39,7 +81,7 @@ const WebCart = () => {
                                 className="cart__info--card"
                             >
                                 {
-                                    cart.length > 0 ? (
+                                    cart.length !== 0 ? (
                                         <List
                                             dataSource={cart}
                                             renderItem={item => (
@@ -97,7 +139,6 @@ const WebCart = () => {
                                         />
                                     ) : (
                                         <Empty>
-
                                         </Empty>
                                     )
                                 }
@@ -114,13 +155,15 @@ const WebCart = () => {
                                         Tổng tiền:
                                     </span>
                                     <span className="cart__payment--item__detail">
-                                        {numberWithCommas(
-                                            cart.reduce((total, item) => {
-                                                return (
-                                                    total + item.item.price * item.quantity
-                                                )
-                                            }, 0)
-                                        )}
+                                        {cart.length !== 0 ? (
+                                            numberWithCommas(
+                                                cart.reduce((total, item) => {
+                                                    return (
+                                                        total + item.item.price * item.quantity
+                                                    )
+                                                }, 0)
+                                            )
+                                        ) : 0}
                                     </span>
                                 </div>
                                 <div className="cart__payment--item">
@@ -129,7 +172,7 @@ const WebCart = () => {
                                     </span>
                                     <span className="cart__payment--item__detail">
                                         {
-                                            numberWithCommas(15000)
+                                            cart.length > 0 ? numberWithCommas(15000) : 0
                                         }
                                     </span>
                                 </div>
@@ -144,7 +187,7 @@ const WebCart = () => {
                                                     return (
                                                         total + item.item.price * item.quantity
                                                     )
-                                                }, 0) - 15000
+                                                }, 0) - (cart.length > 0 ? 15000 : 0)
                                             )
                                         }
                                     </span>
@@ -166,7 +209,7 @@ const WebCart = () => {
                                     </div>
                                 </div>
                                 <div className="cart__payment--action">
-                                    <Button className='my-btn my-btn--primary'>
+                                    <Button className='my-btn my-btn--primary' onClick={handleCheckOut}>
                                         Xác nhận
                                     </Button>
                                 </div>
@@ -174,8 +217,17 @@ const WebCart = () => {
                         </Col>
                     </Row>
                 </div>
-
-
+                <Modal
+                    title="Chưa có sản phẩm trong giỏ hàng!"
+                    visible={isEmptyModal}
+                    onOk={() => {
+                        setIsEmptyModal(false)
+                        navigate("/products")
+                    }}
+                    onCancel={() => { setIsEmptyModal(false) }}
+                >
+                    Mua sắm ngay ?
+                </Modal>
             </WebSection>
         </Helmet>
     )

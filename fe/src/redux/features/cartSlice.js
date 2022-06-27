@@ -6,6 +6,15 @@ export const cartSlice = createSlice({
     name: 'cart',
     initialState: data ? JSON.parse(data) : [],
     reducers: {
+        setCart: (state, action) => {
+            state.splice(0, state.length)
+            if(action.payload.length > 0){
+                action.array.forEach(item => {
+                    state.push(item)
+                });
+            }
+            localStorage.setItem("WEBCART", JSON.stringify(state))
+        },
         addToCart: (state, action) => {
             if(isExist(state, action.payload.id) < 0){
                 state.push({
@@ -49,6 +58,6 @@ const isExist = (arr,id) => {
     return result
 }
 
-export const {addToCart, updateCartItemQuantity, removeCartItem} = cartSlice.actions
+export const {addToCart, updateCartItemQuantity, removeCartItem, setCart} = cartSlice.actions
 
 export default cartSlice.reducer

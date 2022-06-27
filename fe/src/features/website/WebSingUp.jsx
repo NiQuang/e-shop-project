@@ -50,7 +50,7 @@ const WebSignUp = () => {
     } else {
       console.log(res)
       setIsLoginFail(true)
-      setLoginText('Tên đăng nhập hoặc mật khẩu không chính xác!')
+      setLoginText('Đăng ký thất bại!')
     }
   }
 
@@ -224,26 +224,26 @@ const WebSignUp = () => {
                   </Col>
                 </Row >
               </div >
-              {/* <Modal
-                                title="Đăng nhập thất bại"
-                                visible={isLoginFail}
-                                onCancel={loginFailCancel}
-                                onOk={loginFailCancel}
-                            >
-                                {
-                                    loginText
-                                }
-                            </Modal>
-                            <Modal
-                                title="Đăng nhập thành công"
-                                visible={isLoginSuccess}
-                                onCancel={loginSuccess}
-                                onOk={loginSuccess}
-                            >
-                                {
-                                    loginText
-                                }
-                            </Modal> */}
+              <Modal
+                title="Đăng nhập thất bại"
+                visible={isLoginFail}
+                onCancel={loginFailCancel}
+                onOk={loginFailCancel}
+              >
+                {
+                  loginText
+                }
+              </Modal>
+              <Modal
+                title="Đăng nhập thành công"
+                visible={isLoginSuccess}
+                onCancel={loginSuccess}
+                onOk={loginSuccess}
+              >
+                {
+                  loginText
+                }
+              </Modal>
             </WebSection >
           )
       }

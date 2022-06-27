@@ -12,13 +12,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import authAPI from '../../api/authAPI'
 import { useDispatch, useSelector } from 'react-redux'
 import { signin } from '../../redux/features/authSlice'
+import { setCart } from '../../redux/features/cartSlice'
 
 const WebLogin = () => {
 
     const [isLoginFail, setIsLoginFail] = useState(false)
     const [isLoginSuccess, setIsLoginSuccess] = useState(false)
     const [loginText, setLoginText] = useState('')
-    const [checkingAuth, setCheckingAuth] = useState(true)
+    // const [checkingAuth, setCheckingAuth] = useState(true)
 
     const isAuth = useSelector((state) => state.auth.isAuth)
 
@@ -37,6 +38,7 @@ const WebLogin = () => {
         if (!res.status) {
             console.log(res)
             dispath(signin(res))
+            dispath(setCart(res.cartItems))
             setIsLoginSuccess(true)
             setLoginText('Đăng nhập thành công')
         } else {
@@ -57,26 +59,26 @@ const WebLogin = () => {
         navigate('/')
     }
 
-    useState(()=> {
-        if(isAuth){
-            setCheckingAuth(true)
-        }else{
-            setCheckingAuth(false)
-        }
-    },[isAuth])
+    // useState(()=> {
+    //     if(isAuth){
+    //         setCheckingAuth(true)
+    //     }else{
+    //         setCheckingAuth(false)
+    //     }
+    // },[isAuth])
 
-    useEffect(()=> {
-        if(checkingAuth){
-            navigate("/")
-        }
-    },[checkingAuth])
+    // useEffect(()=> {
+    //     if(checkingAuth){
+    //         navigate("/")
+    //     }
+    // },[checkingAuth])
 
     return (
         <Helmet
             title={"Đăng nhập"}
         >
             {
-                checkingAuth ?
+                false ?
                     (
                         <WebSection>
                             <Spin></Spin>

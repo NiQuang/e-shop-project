@@ -38,6 +38,10 @@ public class Product{
     @OneToMany(mappedBy = "product")
     private List<ProductMedia> productMedias;
 
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    private List<CartItem> cartItems;
+
     @Override
     public String toString() {
         return "Product{" +

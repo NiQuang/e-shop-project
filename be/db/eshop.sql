@@ -58,6 +58,36 @@ create table Users
 	constraint PK_Users PRIMARY KEY (username) 
 )
 
+if OBJECT_ID('Adress') is not null
+	drop table Adress
+go
+create table Adress
+(
+	id int identity(1,1) not null,
+	detail nvarchar(500) not null,
+	phone nvarchar(11) not null,
+	username nvarchar(50) not null,
+
+	constraint PK_Adress PRIMARY KEY(id),
+	constraint FK_Adress_Users FOREIGN KEY(username) REFERENCES Users ON UPDATE CASCADE ON DELETE CASCADE
+)
+
+if OBJECT_ID('CartItems') is not null
+	drop table CartItems
+go
+create table CartItems
+(
+	id bigint identity(1,1) not null,
+	productid int not null,
+	quantity int not null,
+	username nvarchar(50) not null,
+
+	constraint PK_CartItems PRIMARY KEY(id),
+	constraint FK_CartItems_Products FOREIGN KEY(productid) REFERENCES Products ON UPDATE CASCADE ON DELETE CASCADE,
+	constraint FK_CartItems_Users FOREIGN KEY(username) REFERENCES Users ON UPDATE CASCADE ON DELETE CASCADE
+
+)
+
 if OBJECT_ID('Roles') is not null
 	drop table Roles
 go
@@ -88,13 +118,13 @@ go
 create table Orders
 (
 	id bigint identity (1,1) not null,
-	adress nvarchar(200) not null,
-	phonenumber nvarchar(10) not null,
 	status int default 0 not null,
+	createdate date default getDate() not null,
 	username nvarchar(50) not null,
-
+	adressId int not null,
 	constraint PK_Orders PRIMARY KEY (id),
-	constraint FK_Orders_Users FOREIGN KEY (username) REFERENCES Users ON UPDATE CASCADE ON DELETE NO ACTION
+	constraint FK_Orders_Users FOREIGN KEY (username) REFERENCES Users ON UPDATE CASCADE ON DELETE NO ACTION,
+	constraint FK_Orders_Adress FOREIGN KEY(adressId) REFERENCES Adress ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 
 
