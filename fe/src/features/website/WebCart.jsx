@@ -86,10 +86,10 @@ const WebCart = () => {
             }
             const res = await orderAPI.checkout(checkoutObject)
             console.log(res)
-            // if(!res.status){
-            //     message.success('Đặt hàng thành công!')
-                
-            // }
+            if(!res.status){
+                message.success('Đặt hàng thành công!')
+                dispatch(clearCart())
+            }
         }
     }
 
