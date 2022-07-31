@@ -5,7 +5,8 @@ insert categories(title) values(N'Áo sơ mi')
 insert categories(title) values(N'Áo nỉ')
 insert categories(title) values(N'Áo khoác')
 
-select * from Products
+select top 5 * from Products 
+order by CreateDate desc
 
 -----------T-shirt-------------
 insert Products(Title, Preview, Price, CategoryId) values(N'T-SHIRT WHITE',N'Hiểu và trân trọng giá trị của trang phục là điều cơ bản trong việc học cách sống tiết kiệm. Chúng ta càng biết nhiều, chúng ta càng đưa ra quyết định tốt hơn, chúng ta càng trân trọng những gì chúng ta có, nó sẽ tồn tại lâu hơn và - kết quả là chúng ta càng cần ít hơn. Như cổ điển, đây là trang phục nói với mọi người đàn ông. Được thiết kế để đứng vững trước sự thử thách của thời gian, chiếc áo phông cổ thuyền cắt thẳng đặc trưng của chúng tôi được làm từ áo bông Ai Cập dày dặn cao cấp và được nhấn nhá bằng đường viền cổ áo có gân. Đóng vai trò vừa đóng vai trò chủ chốt, vừa là món đồ thiết yếu, đây sẽ là món đồ được mặc nhiều nhất trong tủ quần áo của bạn.',200000,1)

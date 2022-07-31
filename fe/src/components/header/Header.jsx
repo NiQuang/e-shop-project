@@ -9,12 +9,13 @@ import {
 import { Avatar, Button, Dropdown, Menu } from 'antd';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { signout } from '../../redux/features/authSlice';
+import { clearCart } from '../../redux/features/cartSlice';
 
 const Header = () => {
     const location = useLocation()
 
 
-    const cart = useSelector(state => state.cart, shallowEqual)
+    const cart = useSelector(state => state.cart.cart)
 
     const isAuth = useSelector(state => state.auth.isAuth)
 
@@ -26,6 +27,7 @@ const Header = () => {
 
     const handleSignout = () => {
         dispath(signout())
+        dispath(clearCart())
     }
 
     const check = isAuth && user?.roles?.length > 0 && (user?.roles?.includes("ROLE_ADMIN") || user?.roles?.includes("ROLE_EMPLOYEE"))

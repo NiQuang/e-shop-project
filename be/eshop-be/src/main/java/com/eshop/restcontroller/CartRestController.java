@@ -37,7 +37,7 @@ public class CartRestController {
         if(cartItem == null){
             cartItem = new CartItem();
             Product product = new Product();
-            product.setId(addRequest.getProductId());
+            product = prDAO.findById(addRequest.getProductId()).get();
             User user = new User();
             user.setUsername(addRequest.getUsername());
             cartItem.setProduct(product);

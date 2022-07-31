@@ -29,5 +29,6 @@ public class Adress {
     private User user;
 
     @OneToMany(mappedBy = "adress")
+    @JsonIgnore
     private List<Order> orders;
 }

@@ -6,6 +6,10 @@ import Helmet from '../../components/helmet/Helmet'
 import productsData from '../../assets/data/productsData'
 import bannerData from '../../assets/data/web-banner'
 import ProductItem from '../../components/product/ProductItem'
+import { useState } from 'react'
+import { useEffect } from 'react'
+
+import productsAPI from '../../api/productsAPI'
 
 const HomeBannerSlider = (props) => {
     return (
@@ -24,6 +28,17 @@ const HomeBannerSlider = (props) => {
 }
 
 const HomePageSection = (props) => {
+
+    const [newCreateProducts, setNewCreateProducts] = useState([])
+
+    useEffect(() => {
+        productsAPI.getNewCreateProduct().then(response => {
+        })
+        .catch( response =>
+            console.log(response)
+        )
+    },[])
+
     return (
         <Row>
             <Col span={24} className="home--section">
@@ -54,6 +69,12 @@ const WebHomePage = () => {
                 <Col span={24}>
                     <HomeBannerSlider
                         data={bannerData}
+                    />
+                </Col>
+                <Col span={24}>
+                    <HomePageSection
+                        title="Sản phẩm mới nhất"
+                        data={productsData}
                     />
                 </Col>
                 <Col span={24}>

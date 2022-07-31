@@ -20,7 +20,6 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
-    private String phonenumber;
     private Integer status;
     private Date createdate = new Date();
     @ManyToOne

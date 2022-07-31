@@ -9,7 +9,7 @@ public class OrderRequest {
 
     private String username;
 
-    private String adress;
+    private Integer adress;
 
     private String phonenumber;
 
@@ -20,7 +20,7 @@ public class OrderRequest {
     public OrderRequest() {
     }
 
-    public OrderRequest(String username, String adress, String phonenumber, int status, Set<OrderDetail> orderDetails) {
+    public OrderRequest(String username, Integer adress, String phonenumber, int status, Set<OrderDetail> orderDetails) {
         this.username = username;
         this.adress = adress;
         this.phonenumber = phonenumber;
@@ -37,11 +37,11 @@ public class OrderRequest {
         this.username = username;
     }
 
-    public String getAdress() {
+    public Integer getAdress() {
         return adress;
     }
 
-    public void setAdress(String adress) {
+    public void setAdress(Integer adress) {
         this.adress = adress;
     }
 

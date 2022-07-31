@@ -1,11 +1,13 @@
 package com.eshop.restcontroller;
 
 import com.eshop.dto.OrderRequest;
+import com.eshop.entity.Adress;
 import com.eshop.entity.Order;
 import com.eshop.entity.OrderDetail;
 import com.eshop.dao.OrderDAO;;
 import com.eshop.dao.OrderDetailDAO;
 import com.eshop.entity.User;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -27,24 +29,28 @@ public class OrderRestController {
 
     @PostMapping("checkout")
     public ResponseEntity<Order> checkout(@RequestBody OrderRequest orderRequest){
-        Order newOrder = new Order();
-        User user = new User();
-        user.setUsername(orderRequest.getUsername());
-        newOrder.setUser(user);
-        newOrder.setPhonenumber(orderRequest.getPhonenumber());
-        newOrder.setStatus(orderRequest.getStatus());
-        newOrder.setOrderDetails(orderRequest.getOrderDetails());
-
-        Order responseOrder = orderDao.save(newOrder);
-        Order orderForDetail = new Order();
-        orderForDetail.setId(responseOrder.getId());
-        Set<OrderDetail> orderDetails = orderRequest.getOrderDetails();
-        orderDetails.forEach(detail -> {
-            detail.setOrder(orderForDetail);
-            orderDetailDAO.save(detail);
-        });
-        System.out.println(orderDetails.size());
-        return ResponseEntity.ok(responseOrder);
+        System.out.println(orderRequest);
+//        Order newOrder = new Order();
+//        User user = new User();
+//        user.setUsername(orderRequest.getUsername());
+//        Adress addr  = new Adress();
+//        addr.setId(orderRequest.getAdress());
+//        newOrder.setUser(user);
+//        newOrder.setAdress(addr);
+//        newOrder.setStatus(orderRequest.getStatus());
+//        newOrder.setOrderDetails(orderRequest.getOrderDetails());
+//
+//        Order responseOrder = orderDao.save(newOrder);
+//        Order orderForDetail = new Order();
+//        orderForDetail.setId(responseOrder.getId());
+//        Set<OrderDetail> orderDetails = orderRequest.getOrderDetails();
+//        orderDetails.forEach(detail -> {
+//            detail.setOrder(orderForDetail);
+//            orderDetailDAO.save(detail);
+//        });
+//        System.out.println(orderDetails.size());
+//        return ResponseEntity.ok(responseOrder);
+        return  ResponseEntity.ok(new Order());
     }
 //    @GetMapping("/search/{query}")
 //    public ResponseEntity<List<Order>> findByQuery(@RequestBody Order order){

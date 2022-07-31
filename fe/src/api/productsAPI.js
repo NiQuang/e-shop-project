@@ -20,6 +20,10 @@ const productAPI = {
     updateProduct: (payload) => {
         const url = '/products/'+ payload.id
         return axiosClient.put(url, payload)
+    },
+    getNewCreateProduct: () => {
+        const url = '/products/get/newcreate'
+        return axiosClient.get(url)
     }
 }
 

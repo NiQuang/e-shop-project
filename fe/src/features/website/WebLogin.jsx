@@ -32,13 +32,20 @@ const WebLogin = () => {
             username: values.username,
             password: values.password
         }
-        console.log(user)
         const res = await authAPI.signin(user)
 
+        console.log(res)
         if (!res.status) {
-            console.log(res)
             dispath(signin(res))
             dispath(setCart(res.cartItems))
+            dispath(setCart(res.cartItems.map((item, index) => ({
+                id: item.id,
+                item: item.product,
+                quantity: item.quantity
+            }))))
+            console.log(res.cartItems)
+            dispath(setCart([]))
+
             setIsLoginSuccess(true)
             setLoginText('Đăng nhập thành công')
         } else {

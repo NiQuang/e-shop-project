@@ -1,6 +1,7 @@
 package com.eshop.restcontroller;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.eshop.dao.CategoryDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,13 @@ public class ProductsRestController {
 		System.out.println("tim dc ngay");
 		return ResponseEntity.ok(dao.findById(id).get());
 	}
+
+	@GetMapping("/api/products/get/newcreate")
+	public ResponseEntity<List<Product>> getNewCreateProduct(){
+		System.out.println();
+		return ResponseEntity.ok(dao.findNewCreateProduct());
+
+	}
 	
 	
 	@PostMapping("/api/products")
@@ -70,4 +78,5 @@ public class ProductsRestController {
 		dao.deleteById(id);
 		return null;
 	}
+
 }

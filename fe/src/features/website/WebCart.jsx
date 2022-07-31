@@ -1,24 +1,27 @@
-import { Button, Col, Row, Card, Tag, List, Select, Empty, Popconfirm, Modal } from 'antd'
+import { Button, Col, Row, Card, Tag, List, Select, Empty, Popconfirm, Modal, InputNumber, message } from 'antd'
 import React, { useEffect, useState } from 'react'
 import Helmet from '../../components/helmet/Helmet'
 import WebSection from '../../components/web-section/WebSection'
 import {
     PlusOutlined,
     MinusOutlined,
-    CloseSquareOutlined
+    CloseSquareOutlined,
+    ClearOutlined
 } from '@ant-design/icons'
 
 import { product } from '../../assets/data/productsData'
 import numberWithCommas from '../../utils/numberComas'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateCartItemQuantity, removeCartItem } from '../../redux/features/cartSlice'
+import { updateCartItemQuantity, removeCartItem, clearCart } from '../../redux/features/cartSlice'
 import { useNavigate } from 'react-router-dom'
 import cartAPI from '../../api/cartAPI'
+import orderAPI from '../../api/orderAPI'
 
 const WebCart = () => {
-    const cart = useSelector((state) => state.cart)
+    const cart = useSelector((state) => state.cart.cart)
 
-    
+
+    const auth = useSelector((state) => state.auth.isAuth)
     const user = useSelector((state) => state.auth.user)
     const dispatch = useDispatch()
 
@@ -26,7 +29,7 @@ const WebCart = () => {
     const [isEmpty, setIsEmpty] = useState(cart.length === 0)
     const [cartData, setCartData] = useState(cart)
 
-    const navigate = useNavigate()  
+    const navigate = useNavigate()
 
     const handleChangeItemQuantity = (id, quantity) => {
         console.log(id, quantity)
@@ -38,32 +41,65 @@ const WebCart = () => {
     }
 
     const handleCheckOut = async () => {
-        if (cart.length > 0) {
-            const checkout = {
-                adress: "testfw",
-                phonenumber: "testfw0123",
-                username: user?.username,
-                orderDetails: cart.map((item, index) => {
-                    return {
-                        price: item.item.price,
-                        quantity: item.quantity,
-                        product: {
+        // if (cart.length > 0) {
+        //     const checkout = {
+        //         adress: "testfw",
+        //         phonenumber: "testfw0123",
+        //         username: user?.username,
+        //         orderDetails: cart.map((item, index) => {
+        //             return {
+        //                 price: item.item.price,
+        //                 quantity: item.quantity,
+        //                 product: {
+        //                     id: item.item.id
+        //                 }
+        //             }
+        //         }),
+        //         status: 0
+        //     }
+
+        //     const res = await cartAPI.checkout(checkout)
+
+        //     if (!res.status) {
+        //         console.log(res)
+        //     } else {
+        //         console.log(res)
+        //     }
+        // } else {
+        //     setIsEmptyModal(true)
+        // }
+        if(auth){
+            console.log(cart)
+            console.log(user)
+            const checkoutObject = {
+                adress:1,
+                status:1,
+                username: user.username,
+                orderDetails: 
+                    cart.map((item, index) => ({
+                        price : item.item.price,
+                        product : {
                             id: item.item.id
-                        }
-                    }
-                }),
-                status: 0
+                        },
+                        quantity: item.quantity
+                    }))
             }
+            const res = await orderAPI.checkout(checkoutObject)
+            console.log(res)
+            // if(!res.status){
+            //     message.success('Đặt hàng thành công!')
+                
+            // }
+        }
+    }
 
-            const res = await cartAPI.checkout(checkout)
+    const handleClearCart = () => {
+        dispatch(clearCart())
+    }
 
-            if (!res.status) {
-                console.log(res)
-            } else {
-                console.log(res)
-            }
-        } else {
-            setIsEmptyModal(true)
+    const handleUpdateCartItemQuantity = (id, value) => {
+        if(value && value >= 0){
+            dispatch(updateCartItemQuantity({ id: id, quantity: value }))
         }
     }
 
@@ -113,7 +149,11 @@ const WebCart = () => {
                                                                 )
                                                             }
                                                             <div className="cart__info--item__quantity--info">
-                                                                {item?.quantity}
+                                                                {/* {item?.quantity} */}
+                                                                <InputNumber 
+                                                                    value={item?.quantity}
+                                                                    onChange={value => handleUpdateCartItemQuantity(item.item.id,value)}
+                                                                />
                                                             </div>
                                                             <div className="cart__info--item__quantity--plus" onClick={() => handleChangeItemQuantity(item.item.id, item.quantity + 1)}>
                                                                 <PlusOutlined />
@@ -144,6 +184,24 @@ const WebCart = () => {
                                 }
 
                             </Card>
+                            {cart.length > 0 && (
+                                <div className='cart__info--clear'>
+                                    <Popconfirm
+                                        title="Bạn có muốn xóa hết giỏ hàng không ?!?"
+                                        okText="Có"
+                                        cancelText="Không"
+                                        onConfirm={handleClearCart}
+                                    >
+                                        <Button
+                                            className='my-btn'
+                                            icon={<ClearOutlined />}
+                                        >
+                                            Xóa giỏ hàng
+                                        </Button>
+                                    </Popconfirm>
+                                </div>
+                            )}
+
                         </Col>
                         <Col span={8}>
                             <Card
@@ -159,7 +217,7 @@ const WebCart = () => {
                                             numberWithCommas(
                                                 cart.reduce((total, item) => {
                                                     return (
-                                                        total + item.item.price * item.quantity
+                                                        total + item?.item?.price * item.quantity
                                                     )
                                                 }, 0)
                                             )
@@ -185,7 +243,7 @@ const WebCart = () => {
                                             numberWithCommas(
                                                 cart.reduce((total, item) => {
                                                     return (
-                                                        total + item.item.price * item.quantity
+                                                        total + item?.item?.price * item.quantity
                                                     )
                                                 }, 0) - (cart.length > 0 ? 15000 : 0)
                                             )
