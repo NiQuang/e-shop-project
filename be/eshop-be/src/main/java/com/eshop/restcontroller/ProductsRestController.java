@@ -2,18 +2,14 @@ package com.eshop.restcontroller;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import com.eshop.dao.CategoryDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.eshop.dao.ProductDAO;
 import com.eshop.entity.Category;
@@ -34,8 +30,38 @@ public class ProductsRestController {
 	public ResponseEntity<Collection<Product>> getAll(){
 		return ResponseEntity.ok(dao.findAll());
 	}
-	
-	
+
+	/**
+	 *
+	 * @param page truyen vao so page can hien thi
+	 * @return số page và sản phẩm trong page, hiện tại đang set là 8
+	 */
+	@GetMapping("/api/products/page")
+	public ResponseEntity<Stream<Product>> GetByPage(@RequestParam Integer page){
+		System.out.println("goi vao ham phan trang");
+		if(page >0 ){
+			Pageable setpage = PageRequest.of(page,8);
+			return ResponseEntity.ok(dao.findAll(setpage).stream());
+		}else{
+			Pageable setpage = PageRequest.of(0,8);
+			return ResponseEntity.ok(dao.findAll(setpage).stream());
+		}
+	}
+	@GetMapping("/api/products/category")
+	public ResponseEntity<Stream<Product>> getbyCategory(@RequestParam Integer categoryid,@RequestParam Integer page){
+		System.out.println("goi vao ham tim kiem theo category");
+		System.out.println(categoryid);
+		if(page >0 ){
+			Pageable setpage = PageRequest.of(page,8);
+			return ResponseEntity.ok(dao.findByCategory_Id(categoryid,setpage).stream());
+		}else{
+			Pageable setpage = PageRequest.of(0,8);
+			return ResponseEntity.ok(dao.findByCategory_Id(categoryid,setpage).stream());
+		}
+
+	}
+
+
 	@GetMapping("/api/products/{id}")
 	public ResponseEntity<Product> getProduct(@PathVariable("id") Integer id){
 		if(!dao.existsById(id)){

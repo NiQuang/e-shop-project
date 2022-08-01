@@ -1,6 +1,9 @@
 package com.eshop.dao;
 
+import com.eshop.entity.Category;
 import com.eshop.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,4 +16,7 @@ public interface ProductDAO extends JpaRepository<Product, Integer> {
             nativeQuery = true
     )
     List<Product> findNewCreateProduct();
+    @Query("select p from Product p order by p.createdate desc ")
+    Page<Product> findAll(Pageable pageable);
+    Page<Product> findByCategory_Id(Integer id ,Pageable pageable);
 }
