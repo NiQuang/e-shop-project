@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import com.eshop.dao.CategoryDAO;
+import com.eshop.dto.ProductsRequestByPrice;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +21,7 @@ import com.eshop.entity.Product;
 @CrossOrigin("*")
 @RestController
 public class ProductsRestController {
-	
+	private final Logger log = LoggerFactory.getLogger(ProductsRestController.class);
 	@Autowired
 	CategoryDAO cateDAO;
 	
@@ -41,10 +44,10 @@ public class ProductsRestController {
 		System.out.println("goi vao ham phan trang");
 		if(page >0 ){
 			Pageable setpage = PageRequest.of(page,8);
-			return ResponseEntity.ok(dao.findAll(setpage).stream());
+			return ResponseEntity.ok(dao.findAllByOrderByCreatedateDesc(setpage).stream());
 		}else{
 			Pageable setpage = PageRequest.of(0,8);
-			return ResponseEntity.ok(dao.findAll(setpage).stream());
+			return ResponseEntity.ok(dao.findAllByOrderByCreatedateDesc(setpage).stream());
 		}
 	}
 	@GetMapping("/api/products/category")
@@ -103,6 +106,23 @@ public class ProductsRestController {
 	public Object deleteProduct(@PathVariable("id") Integer id) {
 		dao.deleteById(id);
 		return null;
+	}
+
+	@GetMapping("/api/products/byprice")
+	public ResponseEntity<Stream<Product>> findByPrice(@RequestBody ProductsRequestByPrice pr){
+		System.out.println(pr.getStrPrice());
+		System.out.println(pr.getEnPrice());
+		log.info("gọi vào hàm tìm theo giá từ: "+ pr.getStrPrice() +"tới: " +pr.getEnPrice());
+		if(pr.getPage() >=0 ){
+			Pageable setpage = PageRequest.of(pr.getPage(), 2);
+			return ResponseEntity.ok(dao.findByPriceBetween(pr.getStrPrice(), pr.getEnPrice(), setpage).stream());
+		}else{
+			Pageable setpage = PageRequest.of(0,2);
+			return ResponseEntity.ok(dao.findByPriceBetween(pr.getStrPrice(), pr.getEnPrice(), setpage).stream());
+		}
+//			List<Product> products = dao.findByPriceBetween(1.0,1000000.0);
+//		System.out.println(products);
+//		return  ResponseEntity.ok(dao.findByPriceBetween(pr.getStrPrice(), pr.getEnPrice()));
 	}
 
 }
