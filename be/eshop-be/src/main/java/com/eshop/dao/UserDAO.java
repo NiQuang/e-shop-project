@@ -9,4 +9,5 @@ public interface UserDAO extends JpaRepository<User, String> {
     Boolean existsByEmail(String email);
     Page<User> findAll(Pageable pageable);
 
+    User findByVerificode(String code);
 }

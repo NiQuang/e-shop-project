@@ -202,9 +202,11 @@ insert ProductMedia(productId, mediaLink) values(69,N'out-wear-11-1.jpg')
 
 
 select * from Users
-select * from USers where username = 'testfw1'
+select * from USers where username = 'niq1'
+delete from users where username = 'niq1'
 
-update users set password = N'$2a$10$gX.CHjUX4MDaMi5vaNvJP.E9DBqdkmMwbYrbuhF903o1VHVuvHC3C'
+
+update users set password = N'$2a$10$plzr7fXlPiO.lHjMC8jrX.0cR3ydbDjgx46nt4dVv7x6b8QxqoF0e'
 INSERT Users ([Username], [Password], [Fullname], [Email], [Photo]) VALUES (N'qadmin', N'qadmin', N'Q Admin', N'qadmin@gmail.com', N'user.png')
 INSERT Users ([Username], [Password], [Fullname], [Email], [Photo]) VALUES (N'ALFKI', N'alfki', N'Maria Anders', N'alfki@gmail.com', N'user.png')
 INSERT Users ([Username], [Password], [Fullname], [Email], [Photo]) VALUES (N'ANATR', N'anatr', N'Ana Trujillo', N'anatr@gmail.com', N'user.png')
@@ -302,6 +304,7 @@ INSERT Users ([Username], [Password], [Fullname], [Email], [Photo]) VALUES (N'WI
 INSERT Users ([Username], [Password], [Fullname], [Email], [Photo]) VALUES (N'WOLZA', N'wolza', N'Zbyszek Piestrzeniewicz', N'wolza@gmail.com', N'user.png')
 
 
+
 select * from Roles
 
 insert Roles (name) values(N'ROLE_USER')
@@ -310,7 +313,7 @@ insert Roles (name) values(N'ROLE_ADMIN')
 
 select * from Permission
 
-select * from Permission where username = 'test2'
+select * from Permission where username = 'testfw3'
 
 INSERT Permission ( [Username], [RoleId]) VALUES (N'qadmin', 1)
 INSERT Permission ( [Username], [RoleId]) VALUES (N'qadmin', 2)
@@ -413,6 +416,14 @@ INSERT Permission ( [Username], [RoleId]) VALUES (N'director',2)
 INSERT Permission ( [Username], [RoleId]) VALUES (N'staff', 1)
 
 select * from orders
-select * from OrderDetail
+select * from OrderDetail where orderId = 3
 
-select * from users where username = '1'
+delete orders where id = 3
+
+select * from users 
+
+select * from Adress
+
+insert adress(detail, phone, username) values('a','12012','qadmin')
+
+select * from CartItems

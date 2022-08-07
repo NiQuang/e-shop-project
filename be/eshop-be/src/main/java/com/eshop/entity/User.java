@@ -23,14 +23,15 @@ public class User {
     private String email;
     private String photo;
     private Boolean activated;
+    @Column(name = "verificode", length = 64)
+    @JsonIgnore
+    private String verificode;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "username")
-//    private Cart carts;
+
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
@@ -47,4 +48,6 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<CartItem> cartItems;
+
+
 }

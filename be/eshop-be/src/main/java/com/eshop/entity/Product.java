@@ -26,7 +26,8 @@ public class Product{
     private String title;
     private String preview;
     private Double price;
-    private Date createdate = new Date();
+    @Temporal(TemporalType.DATE)
+    private Date createdate;
 //    @JsonIgnore
     @ManyToOne @JoinColumn(name="categoryid")
     private Category category;
@@ -42,15 +43,4 @@ public class Product{
     @JsonIgnore
     private List<CartItem> cartItems;
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", preview='" + preview + '\'' +
-                ", images='" + '\'' +
-                ", createdate=" + createdate +
-                ", category=" + category +
-                '}';
-    }
 }

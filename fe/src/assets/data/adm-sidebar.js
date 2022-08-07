@@ -3,7 +3,8 @@ import {
     UserOutlined,
     SkinOutlined,
     RollbackOutlined,
-    ProfileOutlined
+    ProfileOutlined,
+    OrderedListOutlined
 } from '@ant-design/icons';
 
 const admSidebar = [
@@ -11,6 +12,11 @@ const admSidebar = [
         view: 'Dashboard',
         router: '/admin',
         icon: <HomeOutlined />
+    },
+    {
+        view: 'Orders',
+        router: '/admin/orders',
+        icon: <OrderedListOutlined />
     },
     {
         view: 'User',

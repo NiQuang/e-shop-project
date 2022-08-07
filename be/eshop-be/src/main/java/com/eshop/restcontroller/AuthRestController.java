@@ -11,6 +11,8 @@ import com.eshop.entity.User;
 import com.eshop.security.JwtUtils;
 import com.eshop.security.RoleEnum;
 import com.eshop.security.UserDetailsImpl;
+import com.eshop.service.EmailSenderService;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,7 +23,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,6 +50,9 @@ public class AuthRestController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Autowired
+    EmailSenderService emailSenderService;
+
     @PostMapping("/signin")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
@@ -66,7 +74,7 @@ public class AuthRestController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> register(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<?> register(@Valid @RequestBody SignupRequest signUpRequest, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
         if (userRepository.existsById(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -82,7 +90,7 @@ public class AuthRestController {
 //        User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
 //                encoder.encode(signUpRequest.getPassword()));
         User user = new User();
-
+        user.setVerificode(RandomString.make(64));
         user.setUsername(signUpRequest.getUsername());
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(encoder.encode(signUpRequest.getPassword()));
@@ -124,7 +132,7 @@ public class AuthRestController {
         user.setRoles(roles);
 
         userRepository.save(user);
-
+        emailSenderService.sendVerifyMail(user, getSiteURL(request));
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
@@ -136,6 +144,30 @@ public class AuthRestController {
         }
         return  ResponseEntity.ok(userRepository.findById(username).get());
 
+    }
+
+    private String getSiteURL(HttpServletRequest request){
+//        String siteURL = request.getRequestURI().toString();
+        String siteURL = request.getRequestURL().toString();
+        System.out.println(request.getPathInfo());
+        return siteURL;
+
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity verifi(@RequestParam String code){
+        User user = userRepository.findByVerificode(code);
+
+        if (user == null || user.getActivated()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            user.setVerificode(null);
+            user.setActivated(true);
+            userRepository.save(user);
+
+            return ResponseEntity.ok("Activated");
+        }
+//        return ResponseEntity.ok(code);
     }
 
 }

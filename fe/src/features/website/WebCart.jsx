@@ -267,7 +267,7 @@ const WebCart = () => {
                                     </div>
                                 </div>
                                 <div className="cart__payment--action">
-                                    <Button className='my-btn my-btn--primary' onClick={handleCheckOut}>
+                                    <Button className='my-btn my-btn--primary' onClick={handleCheckOut} disabled={cart.length == 0}>
                                         Xác nhận
                                     </Button>
                                 </div>

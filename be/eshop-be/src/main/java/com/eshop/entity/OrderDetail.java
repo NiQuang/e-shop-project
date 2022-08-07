@@ -20,9 +20,11 @@ public class OrderDetail {
     private Long id;
     private Double price;
     private Integer quantity;
+
     @ManyToOne
     @JoinColumn(name = "productid")
     private Product product;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name= "orderid")

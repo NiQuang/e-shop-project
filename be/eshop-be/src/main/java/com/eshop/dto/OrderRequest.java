@@ -15,12 +15,12 @@ public class OrderRequest {
 
     private Integer status;
 
-    private Set<OrderDetail> orderDetails;
+    private List<OrderDetail> orderDetails;
 
     public OrderRequest() {
     }
 
-    public OrderRequest(String username, Integer adress, String phonenumber, int status, Set<OrderDetail> orderDetails) {
+    public OrderRequest(String username, Integer adress, String phonenumber, int status, List<OrderDetail> orderDetails) {
         this.username = username;
         this.adress = adress;
         this.phonenumber = phonenumber;
@@ -61,11 +61,11 @@ public class OrderRequest {
         this.status = status;
     }
 
-    public Set<OrderDetail> getOrderDetails() {
+    public List<OrderDetail> getOrderDetails() {
         return orderDetails;
     }
 
-    public void setOrderDetails(Set<OrderDetail> orderDetails) {
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
         this.orderDetails = orderDetails;
     }
 

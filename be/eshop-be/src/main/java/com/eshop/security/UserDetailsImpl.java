@@ -25,10 +25,10 @@ public class UserDetailsImpl implements UserDetails {
     private List<Adress> adress;
     private Collection<? extends GrantedAuthority> authorities;
 
-
+    private boolean activated ;
     private List<CartItem> cartItems;
     public UserDetailsImpl(String username, String email, String password,String fullname,
-                           Collection<? extends GrantedAuthority> authorities,List<Adress> adress, List<CartItem> cartItems) {
+                           Collection<? extends GrantedAuthority> authorities,List<Adress> adress, List<CartItem> cartItems, boolean activated) {
         this.fullname = fullname;
         this.username = username;
         this.email = email;
@@ -36,6 +36,7 @@ public class UserDetailsImpl implements UserDetails {
         this.authorities = authorities;
         this.adress = adress;
         this.cartItems = cartItems;
+        this.activated = activated;
     }
 
     public static UserDetailsImpl build(User user) {
@@ -51,7 +52,8 @@ public class UserDetailsImpl implements UserDetails {
                 user.getFullname(),
                 authorities,
                 user.getAdress(),
-                user.getCartItems());
+                user.getCartItems(),
+                user.getActivated());
     }
 
     @Override
@@ -93,9 +95,10 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
+
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.activated;
     }
 
     @Override
@@ -122,5 +125,13 @@ public class UserDetailsImpl implements UserDetails {
 
     public void setCartItems(List<CartItem> cartItems) {
         this.cartItems = cartItems;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 }

@@ -5,6 +5,7 @@ import WebsiteLayout from './components/layout/WebsiteLayout';
 import ProtectAdmin from './components/protect-admin/ProtectAdmin';
 import AdmCategories from './features/admin/AdmCategories';
 import AdmDashboard from './features/admin/AdmDashboard';
+import AdmOrders from './features/admin/AdmOrders';
 import AdmProducts from './features/admin/AdmProducts';
 import WebAboutUs from './features/website/WebAboutUs';
 import WebCart from './features/website/WebCart';
@@ -34,6 +35,7 @@ function App() {
           <AdminLayout />
         </ProtectAdmin>}>
           <Route index element={<AdmDashboard />} />
+          <Route path="orders" element={<AdmOrders />} />
           <Route path="users" element={<div>Users Manager</div>} />
           <Route path="categories" element={<AdmCategories />} />
           <Route path="products" element={<AdmProducts />} />

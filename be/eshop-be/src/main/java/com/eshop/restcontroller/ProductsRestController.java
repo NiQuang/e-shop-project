@@ -37,8 +37,9 @@ public class ProductsRestController {
 	 * @return số page và sản phẩm trong page, hiện tại đang set là 8
 	 */
 	@GetMapping("/api/products/page")
-	public ResponseEntity<Stream<Product>> GetByPage(@RequestParam Integer page){
+	public ResponseEntity<Stream<Product>> GetByPage(@RequestParam(required = false) Integer page){
 		System.out.println("goi vao ham phan trang");
+		System.out.println("page");
 		if(page >0 ){
 			Pageable setpage = PageRequest.of(page,8);
 			return ResponseEntity.ok(dao.findAll(setpage).stream());

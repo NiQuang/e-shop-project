@@ -13,6 +13,14 @@ import authAPI from '../../api/authAPI'
 import { useDispatch, useSelector } from 'react-redux'
 import { signin } from '../../redux/features/authSlice'
 
+const SignUpSuccessContent = () => (
+  <>
+    <p>Đăng ký thành công!</p>
+    <p>Vui lòng kiểm tra email của bạn để xác mình tài khoản!</p>
+    <Link to="/login">Đăng nhập ngay</Link>
+  </>
+)
+
 const WebSignUp = () => {
 
   const [isLoginFail, setIsLoginFail] = useState(false)
@@ -21,6 +29,8 @@ const WebSignUp = () => {
   const [checkingAuth, setCheckingAuth] = useState(true)
 
   const isAuth = useSelector((state) => state.auth.isAuth)
+
+  
 
   const navigate = useNavigate()
 
@@ -40,13 +50,13 @@ const WebSignUp = () => {
     if (!res.status) {
       console.log(res)
       setIsLoginSuccess(true)
-      setLoginText('Đăng ký thành công')
-      const res2 = await authAPI.signin({ username: user.username, password: user.password })
-      if (!res2.status) {
-        console.log(res2)
-        dispath(signin(res2))
-        navigate("/")
-      }
+      setLoginText(<SignUpSuccessContent />)
+      // const res2 = await authAPI.signin({ username: user.username, password: user.password })
+      // if (!res2.status) {
+      //   console.log(res2)
+      //   dispath(signin(res2))
+      //   navigate("/")
+      // }
     } else {
       console.log(res)
       setIsLoginFail(true)
@@ -62,7 +72,6 @@ const WebSignUp = () => {
   const loginSuccess = () => {
     setIsLoginSuccess(false)
     setLoginText('')
-    navigate('/')
   }
 
   useState(() => {
@@ -225,7 +234,7 @@ const WebSignUp = () => {
                 </Row >
               </div >
               <Modal
-                title="Đăng nhập thất bại"
+                title="Đăng ký thất bại"
                 visible={isLoginFail}
                 onCancel={loginFailCancel}
                 onOk={loginFailCancel}
@@ -235,9 +244,9 @@ const WebSignUp = () => {
                 }
               </Modal>
               <Modal
-                title="Đăng nhập thành công"
+                title="Đăng ký thành công"
                 visible={isLoginSuccess}
-                onCancel={loginSuccess}
+                onCancel={loginFailCancel}
                 onOk={loginSuccess}
               >
                 {

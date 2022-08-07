@@ -55,6 +55,7 @@ create table Users
 	email nvarchar(200) not null,
 	photo nvarchar(500) null,
 	activated bit default 0 not null,
+	verificode varchar(64) null,
 	constraint PK_Users PRIMARY KEY (username) 
 )
 
