@@ -16,7 +16,12 @@ public interface ProductDAO extends JpaRepository<Product, Integer> {
             nativeQuery = true
     )
     List<Product> findNewCreateProduct();
-    @Query("select p from Product p order by p.createdate desc ")
-    Page<Product> findAll(Pageable pageable);
+   // @Query("select p from Product p order by p.createdate desc ")
+
+
+    Page<Product> findAllByOrderByCreatedateDesc(Pageable pageable);
     Page<Product> findByCategory_Id(Integer id ,Pageable pageable);
+    List<Product> findByPriceBetween(Double price,Double price2,Pageable pageable);
+    List<Product> findByCategory_IdAndAndPriceBetween(Integer id ,Double min ,Double max,Pageable pageable);
+
 }
