@@ -8,11 +8,13 @@ import AdmDashboard from './features/admin/AdmDashboard';
 import AdmOrders from './features/admin/AdmOrders';
 import AdmProducts from './features/admin/AdmProducts';
 import WebAboutUs from './features/website/WebAboutUs';
+import WebAllOrder from './features/website/WebAllOrder';
 import WebCart from './features/website/WebCart';
 import WebHomePage from './features/website/WebHomePage';
 import WebLogin from './features/website/WebLogin';
 import WebProduct from './features/website/WebProduct';
 import WebProductDetail from './features/website/WebProductDetail';
+import WebSingleOrderDetail from './features/website/WebSingleOrderDetail';
 import WebSignUp from './features/website/WebSingUp';
 
 
@@ -29,6 +31,8 @@ function App() {
           <Route path="cart" element={<WebCart />} />
           <Route path="login" element={<WebLogin />} />
           <Route path="signup" element={<WebSignUp />} />
+          <Route path="my-all-order" element={<WebAllOrder />} />
+          <Route path="my-order/:id" element={<WebSingleOrderDetail  />} />
           <Route path="*" element={<div>Page not found</div>} />
         </Route>
         <Route path="/admin" element={<ProtectAdmin>

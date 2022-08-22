@@ -5,11 +5,14 @@ import com.eshop.service.EmailSenderService;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EmailSenderServiceImpl implements EmailSenderService {
@@ -19,6 +22,8 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     public EmailSenderServiceImpl(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
+
+    List<MimeMessage> queue = new ArrayList<>();
 
     @Override
     public void sendEmail(String to, String subject, String message) {
@@ -32,8 +37,10 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         this.mailSender.send(simpleMailMessage);
     }
 
+
+
     @Override
-    public void sendVerifyMail(User user, String siteURL) throws MessagingException, UnsupportedEncodingException {
+    public void pushVerifyMail(User user, String siteURL) throws MessagingException, UnsupportedEncodingException {
         String to = user.getEmail();
         String from = "work.quangni12111@gmail.com";
         String senderName = "EShop Ecommerce";
@@ -58,6 +65,25 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         content = content.replace("[[URL]]", verifyURL);
 
         helper.setText(content, true);
-        mailSender.send(message);
+        queue.add(message);
+    }
+
+
+
+
+
+    @Scheduled(fixedRate = 10*1000, initialDelay = 5000)
+    public void run(){
+        int success =0, error = 0;
+        while (!queue.isEmpty()){
+            MimeMessage message = queue.remove(0);
+            try{
+                mailSender.send(message);
+                success++;
+            }catch(Exception e){
+                error++;
+            }
+            System.out.printf(">> Send: %d, Error: %d\r\n", success, error);
+        }
     }
 }

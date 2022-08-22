@@ -202,8 +202,9 @@ insert ProductMedia(productId, mediaLink) values(69,N'out-wear-11-1.jpg')
 
 
 select * from Users
-select * from USers where username = 'niq1'
-delete from users where username = 'niq1'
+select * from USers where email = 'niquang1211@gmail.com'
+update users set email = 'admin@gmail.com' where email = 'niquang1211@gmail.com'
+delete from users where username = 'niq2'
 
 
 update users set password = N'$2a$10$plzr7fXlPiO.lHjMC8jrX.0cR3ydbDjgx46nt4dVv7x6b8QxqoF0e'
@@ -416,9 +417,9 @@ INSERT Permission ( [Username], [RoleId]) VALUES (N'director',2)
 INSERT Permission ( [Username], [RoleId]) VALUES (N'staff', 1)
 
 select * from orders
-select * from OrderDetail where orderId = 3
 
-delete orders where id = 3
+
+select * from orders where username = 'niq1'
 
 select * from users 
 

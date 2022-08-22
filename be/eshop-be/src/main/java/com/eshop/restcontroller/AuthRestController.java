@@ -132,7 +132,7 @@ public class AuthRestController {
         user.setRoles(roles);
 
         userRepository.save(user);
-        emailSenderService.sendVerifyMail(user, getSiteURL(request));
+        emailSenderService.pushVerifyMail(user, getSiteURL(request));
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 

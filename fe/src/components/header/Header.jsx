@@ -42,6 +42,9 @@ const Header = () => {
                             label: <Link to="/my-account">Cài đặt</Link>,
                             key: '0'
                         },
+                        {
+                            label : <Link to="/my-all-order">Đơn hàng của tôi</Link>
+                        },
                         check ?
                             {
                                 label: <Link to="/admin">Trang quản trị</Link>,
@@ -59,6 +62,9 @@ const Header = () => {
                     {
                         label: <Link to="/login">Đăng nhập</Link>,
                         key: '0'
+                    },
+                    {
+                        label : <Link to="/my-all-order">Đơn hàng của tôi</Link>
                     },
                     {
                         label: <Link to="/signup">Đăng ký</Link>,
@@ -82,6 +88,9 @@ const Header = () => {
                                 label: <Link to="/my-account">Cài đặt</Link>,
                                 key: '0'
                             },
+                            {
+                                label : <Link to="/my-all-order">Đơn hàng của tôi</Link>
+                            },
                             check ?
                                 {
                                     label: <Link to="/admin">Trang quản trị</Link>,
@@ -97,6 +106,9 @@ const Header = () => {
                             {
                                 label: <Link to="/login">Đăng nhập</Link>,
                                 key: '0'
+                            },
+                            {
+                                label : <Link to="/my-all-order">Đơn hàng của tôi</Link>
                             },
                             {
                                 label: <Link to="/signup">Đăng ký</Link>,

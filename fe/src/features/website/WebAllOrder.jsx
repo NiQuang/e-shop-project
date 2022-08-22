@@ -1,89 +1,63 @@
-import React, { useEffect } from 'react'
-import orderAPI from '../../api/orderAPI'
+import React, {useState} from 'react'
 import Helmet from '../../components/helmet/Helmet'
-import { Table, Button, Badge, Avatar, List } from 'antd'
-import {
-    EditOutlined,
-    DeleteOutlined
-} from '@ant-design/icons';
-import { useState } from 'react'
-import millify from 'millify';
+import WebSection from '../../components/web-section/WebSection'
+import orderAPI from '../../api/orderAPI'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Table, Badge, Button } from 'antd'
+import millify from 'millify'
+import { Link } from 'react-router-dom'
 
-const AdmOrders = () => {
+
+const WebAllOrder = () => {
+
+    const auth = useSelector(state => state.auth.isAuth)
+    const user = useSelector(state => state.auth.user)
+
 
     const [tableData, setTableData] = useState([])
 
 
     const orderStatusToText = (status) => {
         switch (status) {
-            case (1): {
+            case (1):{
                 return "Chờ xác nhận!"
                 break
             }
-            case (2): {
+            case (2):{
                 return "Đang chuẩn bị hàng!"
                 break
             }
 
-            default: {
+            default:{
                 return "Đang chuẩn bị hàng!"
             }
         }
     }
 
     useEffect(() => {
-        orderAPI.getAll().then(response => {
-            const data = response.map((item, index) => ({
-                index: index,
-                ...item
-            }))
-            setTableData(data)
-            console.log(data)
-        })
+        if(auth){
+            orderAPI.getAllMy(user.username).then((response)=> {
+                console.log(response)
+                const data = response.map((item, index) => ({
+                    index: index,
+                    ...item
+                }))
+                setTableData(data)
+                console.log(data)
+            }).catch(error => console.log(error))
+        }
     }, [])
 
     return (
-        <Helmet
-            title="Admin - Orders List"
-        >
-            <div className="adm__content--section">
-                <div className="adm__content--section__title">
-                    <h2>admin orders list manager</h2>
-                </div>
-                <div className="adm__content--section__detail">
-                    <div className="adm--orders">
+        <Helmet title="Đơn đặt hàng">
+            <WebSection>
+            <div className="adm--orders">
                         <div className="adm--orders__table">
                             <Table
                                 dataSource={tableData}
                                 size='small'
-                                borderedreturn
-                                expandable={{
-                                    expandedRowRender: (record) => {
-                                        return (
-                                            <List
-                                                itemLayout='horizontal'
-                                                dataSource={record.orderDetails}
-                                                renderItem={(item) => {
-                                                    return (
-                                                        <List.Item>
-                                                            <p><b>Id: </b>{item.product.id}</p>
-                                                            <p><b>Name: </b>{item.product.title}</p>
-                                                            <p><b>price: </b>{item.price}</p>
-                                                            <p><b>quantity: </b>{item.quantity}</p>
-                                                            <p><b>total: </b>{millify(item.quantity * item.price)} VND</p>
-                                                            <Avatar src={`http://localhost:8080/api/file/images/${item.product.productMedias[0].mediaLink}`} />
-                                                        </List.Item>
-                                                    )
-                                                }}
-                                            >
-                                                <p><b>Thanh toan: </b>{millify(record.orderDetails.reduce((total, item) => {
-                                                    return total + item.quantity * item.price
-                                                }, 0))} VND</p>
-                                            </List>
-                                        )
-                                    },
-                                    rowExpandable: record => record.orderDetails.length > 0
-                                }}
+                                bordered
                             >
                                 <Table.Column className="adm--orders__table--column__index" title="STT" dataIndex="index" key="index" />
                                 <Table.Column className="adm--orders__table--column__index" title="Create Date" dataIndex="createdate" key="createdate" />
@@ -93,16 +67,16 @@ const AdmOrders = () => {
                                     render={record => (
                                         <>
                                             <p>
-                                                <b>Username:</b> {record.username}
+                                                <b>Username:</b> {record.user.username}
                                             </p>
                                             <p>
-                                                <b>Email:</b> {record.email}
+                                                <b>Email:</b> {record.user.email}
                                             </p>
                                             <p>
-                                                <b>Phonenumber:</b> {record.phone}
+                                                <b>Phonenumber:</b> {record.adress.phone}
                                             </p>
                                             <p>
-                                                <b>Adress:</b> {record.adress}
+                                                <b>Adress:</b> {record.adress.detail}
                                             </p>
                                         </>
                                     )}
@@ -130,6 +104,9 @@ const AdmOrders = () => {
                                             >
                                                 {record.orderStatus}
                                             </Badge.Ribbon>
+                                            <Button className='my-btn'>
+                                                <Link to={`/my-order/${record.id}`}>Xem chi tiết</Link>
+                                            </Button>
                                         </>
                                     )}
                                 />
@@ -162,10 +139,9 @@ const AdmOrders = () => {
                             </Table>
                         </div>
                     </div>
-                </div>
-            </div>
+            </WebSection>
         </Helmet>
     )
 }
 
-export default AdmOrders
+export default WebAllOrder

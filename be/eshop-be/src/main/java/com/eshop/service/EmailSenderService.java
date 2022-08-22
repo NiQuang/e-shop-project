@@ -9,5 +9,5 @@ public interface EmailSenderService {
 
     void sendEmail(String to, String subject, String message);
 
-    void sendVerifyMail(User user, String siteURL) throws MessagingException, UnsupportedEncodingException;
+    void pushVerifyMail(User user, String siteURL) throws MessagingException, UnsupportedEncodingException;
 }

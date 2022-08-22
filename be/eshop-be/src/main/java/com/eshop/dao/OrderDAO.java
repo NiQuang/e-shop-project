@@ -28,4 +28,12 @@ public interface OrderDAO extends JpaRepository<Order, Long> {
 
     @Query("Select o.orderDetails from Order o WHERE o.id = 1")
     Set<OrderDetail> find1Oddt();
+
+    @Query("Select o from Order o Where o.user.username = ?1")
+    List<Order> findByUsername(String username);
+
+
+    Boolean existsByUserAndId(User user, Long id);
+
+
 }
